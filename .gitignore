@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+rsconnect*
+nc_09_polling_weights_files*

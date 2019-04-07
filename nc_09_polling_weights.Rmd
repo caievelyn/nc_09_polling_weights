@@ -1,0 +1,44 @@
+---
+title: "NC 09 Polling Weights"
+author: "Evelyn Cai"
+date: "April 7, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(tidyverse)
+library(devtools)
+library(gt)
+library(ggplot2)
+library(ggbeeswarm)
+
+# Read in CSV file
+x <- read_csv(file = "ps_4_elections-poll-nc09-3.csv")
+```
+
+```{r graphic, message = FALSE, warning = FALSE}
+x %>%
+  select(gender, final_weight) %>%
+  # Filter out refused responses to the gender question
+  filter(gender != "[DO NOT READ] Refused") %>%
+  # Associate gender and polling weight through group_by function
+  group_by(gender, final_weight) %>%
+  # Create a ggplot in which the categorical variable is on the x axis (will coord flip)
+  ggplot(mapping = aes(x = gender, y = final_weight)) + 
+  # Create a boxplot
+  geom_boxplot() +
+  # Jitter the points with slight transparency and add a purple color
+  geom_jitter(alpha = 0.3, color = 'blueviolet') +
+  # Flip the x / y variables
+  coord_flip() +
+  # Label the title, subtitle, and caption to reflect the relationship between gender and polling weight and source of data
+  labs(title = "Polling Weight per Gender in NC 9",
+       subtitle = "Females have a higher median polling weight than males",
+       caption = "Source: https://raw.githubusercontent.com/TheUpshot/2018-live-poll-results/master/data/elections-poll-nc09-3.csv") +
+  xlab(NULL) +
+  # Rename y-axis
+  ylab("Polling Weight")
+```
+
